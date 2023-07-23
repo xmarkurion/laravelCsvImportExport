@@ -8,9 +8,21 @@ class LinkController extends Controller
 	//How to use import
     public function import()
     {
-        $file_location = storage_path("/app/public/links.csv");
-        $csv = new CsvImport($file_location);
-        dd($csv->import());
+        if (request()->post()) {
+            $valid = request()->validate([
+                'file' => 'required|file|mimes:csv,txt',
+            ]);
+
+            $file_location = request()->file('file');
+            $csv = new CsvImport($file_location);
+            dd($csv->import());
+
+        }
+        return view('link.import');
+        
+//        $file_location = storage_path("/app/public/links.csv");
+//        $csv = new CsvImport($file_location);
+//        dd($csv->import());
     }
 
 	// How to use export
